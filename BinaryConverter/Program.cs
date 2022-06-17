@@ -30,6 +30,9 @@ namespace BinaryConverter
             //Flow Control
             JMP = (0x30), //JMP(Addrh|Addrl|nah) Jumps to a memory location denoted by Addrh & Addrl bytes 
             JMPT = (0x31),
+            JMPZ,
+            JMPi,
+            JMPZi,
 
             //Memory
             SET = (0x40),
@@ -38,7 +41,8 @@ namespace BinaryConverter
             STORE = (0x43),
             PUSH = (0x44),
             POP = (0x45),
-
+            LOADi,
+            STOREi,
         }
 
         public static short[] Reg = new short[5];
