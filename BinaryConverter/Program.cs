@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 using System.Collections;
-
+using System.Text.RegularExpressions;
 
 namespace BinaryConverter
 {
@@ -469,13 +469,185 @@ namespace BinaryConverter
         }
         //010101
         //111
-        void Print(LinkedListNode head1)
-        {
 
+
+        static int cheating = 0;
+
+       static string[] matches = new string[3] {"(ADD|SUB|MUL|DIV|MOD) (R([3][0-1]|[1-2][0-9]|[0-9]) ){3}", "", ""};
+        //replace this guy ^
+
+        //Match match = Regex.Match(input: "ADD R0 R1 R2", pattern: "(ADD|SUB|MUL|DIV|MOD) (R([3][0-1]|[1-2][0-9]|[0-9]) ){3}");
+
+        /*
+        uint eh(string assebmly)
+        {
+            cheating = 0;
+            string RDest = "";
+            string R1 = "";
+            string R2 = "";
+
+            byte instruc = 0;
+            byte byteDest = 0;
+            byte byteOne = 0; //padding
+            byte byteTwo = 0;
+
+            string instruction = seperateViaSpace(assebmly, 0);
+            RDest = seperateViaSpace(assebmly, cheating);
+            R1 = seperateViaSpace(assebmly, cheating);
+            if (cheating != assebmly[assebmly.Length-1])
+            {
+                R2 = seperateViaSpace(assebmly, cheating);
+            }
+
+            if(R2 == "")
+            {
+                //padding
+                byteOne = 0xFF;
+            }
+
+            if (instruction == "ADD")
+            {
+                instruc = 0x10;
+
+            }
+            else if (instruction == "SUB")
+            {
+                instruc = 0x11;
+            }
+            else if (instruction == "SET")
+            {
+                instruc = 0x40;
+            }
+
+            //return 0x10030102
+
+            return 1;
+        }
+        */
+        static uint assemble(string instruction)
+        {
+            string[] parts = instruction.Split(' ');
+            string instruct = parts[0];
+            string firstRegister = parts[1];
+            byte firstRegisterIndex = byte.Parse(firstRegister.Substring(1));
+
+            byte opCode = 0;
+
+            if (instruct == "SET")
+            {
+                opCode = 0x40;
+
+                ushort data = ushort.Parse(parts[2]);
+
+                //string value = parts[2];
+                //ushort data = ushort.Parse(value);
+
+                //check if the short is a byte of a short (i.e its bigger than a byte, put some to the padding)
+                return (uint)((opCode<<24)| (firstRegisterIndex << 16) | data);
+            }
+            else if (instruct == "ADD")
+            {
+                opCode = 0x10;
+
+                string secRegister = parts[2];
+                byte secRegisterIndex = byte.Parse(firstRegister.Substring(1));
+
+                string thirdRegister = parts[3];
+                byte thirdRegisterIndex = byte.Parse(firstRegister.Substring(1));
+
+               // return (uint)(());
+            }
+
+             
+
+            return 0;
+        }
+
+        static uint eh(string instruction)
+        {
+            Match match = null;
+
+            foreach (var strMatch in matches)
+            {
+                match = Regex.Match(instruction, strMatch);
+                if (match.Success)
+                {
+                    break;
+                }
+            }
+
+            if (!match.Success)
+            {
+                throw new Exception("Syntax Error nerd");
+            }
+
+            string name = match.Groups[1].Value;
+            byte opCode;
+            byte firstRegisterIndex = byte.Parse(match.Groups[2].Value);
+            //byte secoundRegisterIndex = byte.Parse(match.Groups[3].Value);
+            //byte thirdRegisterIndex = 0;
+
+            //if (match.Groups[4] != null)
+            //{
+            //    thirdRegisterIndex = byte.Parse(match.Groups[4].Value);
+            //}
+
+            if (name == "ADD")
+            {
+                opCode = 0x10;
+
+                byte secondRegisterIndex = byte.Parse(match.Groups[3].Value);
+                byte thirdRegisterIndex = byte.Parse(match.Groups[4].Value);
+                
+                return (uint)((opCode << 24) | (firstRegisterIndex << 16) | (secondRegisterIndex << 8) | thirdRegisterIndex);
+            }
+            if (name == "SUB")
+            {
+                opCode = 0x11;
+
+                
+            }
+            if (name == "SET")
+            {
+                opCode = 0x40;
+
+                short data = 
+            }
+
+            return 0;
+        }
+
+        string[] LoadAssemblyProgram()
+        {
+            return new string[]
+            {
+                //placeholder
+                "SET R0 5",
+                "SET R1 10",
+                "ADD R0 R1 R2",
+            };
+        }
+
+        string seperateViaSpace(string fullWord, int startingIndex)
+        {
+            string instruction = "";
+            int counter = startingIndex;
+
+            while (counter != fullWord.Length-1 && fullWord[counter] != ' ')
+            {
+                instruction = fullWord[counter] + instruction;
+                counter++;
+            }
+
+            cheating = counter;
+            return instruction;
         }
 
         static void Main(string[] args)
         {
+
+
+
             Random gen = new Random();
 
             int[] test = new int[7] { 5, 7, 11, 34, 17, 2112, 23 };
