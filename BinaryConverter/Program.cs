@@ -2,6 +2,7 @@
 using System.Text;
 using System.Collections;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
 
 namespace BinaryConverter
 {
@@ -414,10 +415,6 @@ namespace BinaryConverter
             }
         }
 
-        //write a function that takes in the head of two linked lists (node)
-        //(values are 0 or 1)
-        //Each linked list repersents a binary number
-        //Add the values inside of them and return a new linked list
         static LinkedListNode Add(LinkedListNode head1, LinkedListNode head2)
         {
             LinkedListNode newListHead = new LinkedListNode(-1);
@@ -469,9 +466,6 @@ namespace BinaryConverter
         }
         //010101
         //111
-
-
-        static int cheating = 0;
 
        static string[] matches = new string[3] {"(ADD|SUB|MUL|DIV|MOD) (R([3][0-1]|[1-2][0-9]|[0-9]) ){3}", "", ""};
         //replace this guy ^
@@ -558,10 +552,10 @@ namespace BinaryConverter
                // return (uint)(());
             }
 
-             
-
             return 0;
         }
+
+        //Dictionary ;
 
         static uint eh(string instruction)
         {
@@ -584,13 +578,6 @@ namespace BinaryConverter
             string name = match.Groups[1].Value;
             byte opCode;
             byte firstRegisterIndex = byte.Parse(match.Groups[2].Value);
-            //byte secoundRegisterIndex = byte.Parse(match.Groups[3].Value);
-            //byte thirdRegisterIndex = 0;
-
-            //if (match.Groups[4] != null)
-            //{
-            //    thirdRegisterIndex = byte.Parse(match.Groups[4].Value);
-            //}
 
             if (name == "ADD")
             {
@@ -611,7 +598,7 @@ namespace BinaryConverter
             {
                 opCode = 0x40;
 
-                short data = 
+                //short data = 
             }
 
             return 0;
@@ -638,19 +625,31 @@ namespace BinaryConverter
                 instruction = fullWord[counter] + instruction;
                 counter++;
             }
-
-            cheating = counter;
             return instruction;
         }
 
         static void Main(string[] args)
         {
+            string test = "ADD R0 R1 R2";
+            string test2 = "SUB R1 R2 R3";
+
+            ADD e = (ADD)Instruction.Parse(test);
+            SUB a = (SUB)Instruction.Parse(test2);
+            ;
+
+
+
+
+            /*
+
+
+
 
 
 
             Random gen = new Random();
 
-            int[] test = new int[7] { 5, 7, 11, 34, 17, 2112, 23 };
+            //int[] test = new int[7] { 5, 7, 11, 34, 17, 2112, 23 };
 
             //LoopThrough(test, 2, 5);
 
@@ -664,8 +663,6 @@ namespace BinaryConverter
 
             LinkedListNode cbbc = Add(abba, baab);
             ;
-
-            /*
             Reg[IP] = 0;
 
             //R0 = 0, R1 = 1 (counter), R2 = 5, R3 = gte result
