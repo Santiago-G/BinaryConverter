@@ -12,9 +12,6 @@ namespace BinaryConverter
         //string Pattern = "ADD R([012][\d]|3[01]|\d) R([012][\d]|3[01]|\d) R([012][\d]|3[01]|\d)";
 
         //opC
-
-
-
         public ADD(uint machineCode, byte[] instructiondata) : base(machineCode, instructiondata)
         {
             

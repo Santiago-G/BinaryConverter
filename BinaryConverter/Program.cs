@@ -3,11 +3,15 @@ using System.Text;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace BinaryConverter
 {
     class Program
     {
+        #region other stuff
+
         public enum OpCodes : byte
         {
             //NOP
@@ -467,7 +471,7 @@ namespace BinaryConverter
         //010101
         //111
 
-       static string[] matches = new string[3] {"(ADD|SUB|MUL|DIV|MOD) (R([3][0-1]|[1-2][0-9]|[0-9]) ){3}", "", ""};
+        static string[] matches = new string[3] { "(ADD|SUB|MUL|DIV|MOD) (R([3][0-1]|[1-2][0-9]|[0-9]) ){3}", "", "" };
         //replace this guy ^
 
         //Match match = Regex.Match(input: "ADD R0 R1 R2", pattern: "(ADD|SUB|MUL|DIV|MOD) (R([3][0-1]|[1-2][0-9]|[0-9]) ){3}");
@@ -537,7 +541,7 @@ namespace BinaryConverter
                 //ushort data = ushort.Parse(value);
 
                 //check if the short is a byte of a short (i.e its bigger than a byte, put some to the padding)
-                return (uint)((opCode<<24)| (firstRegisterIndex << 16) | data);
+                return (uint)((opCode << 24) | (firstRegisterIndex << 16) | data);
             }
             else if (instruct == "ADD")
             {
@@ -549,7 +553,7 @@ namespace BinaryConverter
                 string thirdRegister = parts[3];
                 byte thirdRegisterIndex = byte.Parse(firstRegister.Substring(1));
 
-               // return (uint)(());
+                // return (uint)(());
             }
 
             return 0;
@@ -585,14 +589,14 @@ namespace BinaryConverter
 
                 byte secondRegisterIndex = byte.Parse(match.Groups[3].Value);
                 byte thirdRegisterIndex = byte.Parse(match.Groups[4].Value);
-                
+
                 return (uint)((opCode << 24) | (firstRegisterIndex << 16) | (secondRegisterIndex << 8) | thirdRegisterIndex);
             }
             if (name == "SUB")
             {
                 opCode = 0x11;
 
-                
+
             }
             if (name == "SET")
             {
@@ -620,7 +624,7 @@ namespace BinaryConverter
             string instruction = "";
             int counter = startingIndex;
 
-            while (counter != fullWord.Length-1 && fullWord[counter] != ' ')
+            while (counter != fullWord.Length - 1 && fullWord[counter] != ' ')
             {
                 instruction = fullWord[counter] + instruction;
                 counter++;
@@ -628,8 +632,65 @@ namespace BinaryConverter
             return instruction;
         }
 
+        #endregion
+
+
+        public abstract class Animal
+        {
+
+            public Animal()
+            {
+                Type type = this.GetType();
+
+
+
+                MethodInfo[] methods = type.GetMethods(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.DeclaredOnly | System.Reflection.BindingFlags.GetProperty);
+
+
+                MethodInfo[] methods2 = methods.SkipWhile();
+                //int count = 0;
+                //foreach (var method in methods)
+                //{
+                //    if (method.Attributes != MethodAttributes.SpecialName)
+                //    {
+                //        count++;
+                //    }
+                //}
+
+                if (methods.Length < 3)
+                {
+                    throw new Exception("Don't bring me down");
+                }
+                //type.getMethod
+            }
+        }
+
+        public class Cat : Animal
+        {
+            public int Age => 4;
+            public int Legs => 4;
+
+
+
+            public int ELO => 6;
+
+            private void Meow()
+            {
+                Console.WriteLine("hello");
+            }
+        }
+
+        public class Dog : Animal
+        {
+
+        }
+
         static void Main(string[] args)
         {
+            Cat cat = new Cat();//Fail at run time if the cat does not have atleast two public methods
+
+            ;
+
             string test = "ADD R0 R1 R2";
             string test2 = "SUB R1 R2 R3";
 
@@ -641,11 +702,6 @@ namespace BinaryConverter
 
 
             /*
-
-
-
-
-
 
             Random gen = new Random();
 

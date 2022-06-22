@@ -25,6 +25,10 @@ namespace BinaryConverter
             string thirdRegister = parts[3];
             byte thirdRegisterIndex = byte.Parse(thirdRegister.Substring(1));
 
+            instructionData[0] = opCode;
+            instructionData[1] = firstRegisterIndex;
+            instructionData[2] = secRegisterIndex;
+            instructionData[3] = thirdRegisterIndex;
             MachineCode = (uint)((opCode << 24) | (firstRegisterIndex << 16) | (secRegisterIndex << 8) | thirdRegisterIndex);
         }
 
