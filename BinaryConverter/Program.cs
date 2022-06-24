@@ -13,6 +13,9 @@ namespace BinaryConverter
 {
     class Program
     {
+        static public byte[] Registers = new byte[32];
+        static public int IP = 0;
+
         static string[] LoadAssemblyProgram()
         {
             return System.IO.File.ReadAllLines("stationTo.station");
@@ -46,7 +49,7 @@ namespace BinaryConverter
 
         public static Instruction[] GetAllInstructions()
         {
-            Instruction[] validInstructions =  new Instruction[] { new ADD(), new SUB(), new MUL(), new DIV(), new MOD()};
+            Instruction[] validInstructions = new Instruction[] { new ADD(), new SUB(), new MUL(), new DIV(), new MOD() };
             //you would have to fill in NameToOpCode here.
             return validInstructions;
         }
@@ -72,6 +75,12 @@ namespace BinaryConverter
 
         //
 
+        static byte GetNthByte(int item, int index)
+        {
+            return (byte)((item >> (index * 8)) & 0xFF);
+        }
+
+
         static void Main(string[] args)
         {
             Instruction[] instructions = CoolerGetAllInstructions();
@@ -86,16 +95,25 @@ namespace BinaryConverter
                 {
                     match = Regex.Match(assemblyInstruction, ins.Pattern);
 
-                    if(match.Success)
+                    if (match.Success)
                     {
                         assemblyInstructionsInProgram.Add(ins.Parse(match));
                         break;
                     }
                 }
             }
+
+            for (; IP < assemblyInstructionsInProgram.Count; IP++)
+            {
+                assemblyInstructionsInProgram[IP].DoWork();
+            }
+
+            ;
+
+
             byte[] electricBlue = InstructionsToArray(assemblyInstructionsInProgram);
             ;
-            System.IO.File.WriteAllBytes("AssemblyProgramBytes.bin", electricBlue);
+            //System.IO.File.WriteAllBytes("AssemblyProgramBytes.bin", electricBlue);
 
         }
     }

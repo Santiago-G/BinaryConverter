@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BinaryConverter;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -11,6 +12,11 @@ namespace Assembler.Instructions.Math_Layouts
 
         private MathLayout mathLayout = new MathLayout();
         protected override ILayout Layout => mathLayout;
+
+        public override void DoWork()
+        {
+            Program.Registers[Data[1]] = (byte)(Program.Registers[Data[2]] * Program.Registers[Data[3]]);
+        }
 
         public MUL(byte[] data) : base(data)
         {

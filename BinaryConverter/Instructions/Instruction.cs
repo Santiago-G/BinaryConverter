@@ -18,6 +18,8 @@ namespace Assembler
             Data = data;
         }
 
+        public abstract void DoWork();
+
         protected Instruction() { }
         public Instruction Parse(Match match)
         {

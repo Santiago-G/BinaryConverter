@@ -15,9 +15,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Instructions\Logic Layouts\" />
-    <Folder Include="Instructions\Memory Layouts\" />
-  </ItemGroup>
-
 </Project>
